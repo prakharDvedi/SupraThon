@@ -8,6 +8,35 @@ import pickle
 
 
 WEIGHTS_FILE = "model_weights.pkl"
+GDRIVE_URL = "https://drive.google.com/uc?id=1UklFzRUh7zB9xk9xt32JzC6Y6L26m4Qu"
+
+def download_weights():
+    import gdown
+    gdown.download(GDRIVE_URL, WEIGHTS_FILE, quiet=False)
+
+if not os.path.exists(WEIGHTS_FILE):
+    try:
+        import gdown
+    except ImportError:
+        import subprocess
+        subprocess.check_call(["pip", "install", "gdown"])
+        import gdown
+    download_weights()
+
+if os.path.exists(WEIGHTS_FILE):
+    with open(WEIGHTS_FILE, 'rb') as f:
+        weights = pickle.load(f)
+    w1 = weights['w1']
+    w = weights['w']
+    bias = weights['bias']
+    beta_list = weights['beta_list']
+    n_layers = weights['n_layers']
+    n_features = weights['n_features']
+    n_nodes = weights['n_nodes']
+else:
+    raise FileNotFoundError(
+        "model_weights.pkl not found and could not be downloaded. Please check your Google Drive link or network connection."
+    )
 
 # Feature engineering functions
 
