@@ -153,6 +153,11 @@ def predict_anomaly(user_input):
         output = np.dot(D_list[i], beta_list[i])
         output_list.append(output)
     sum_output = np.sum(output_list, axis=0)
-    # Majority voting threshold
-    pred = 1 if sum_output[0, 1] >= n_layers / 2 else 0
-    return pred
+    score = sum_output[0, 1] / n_layers  # Normalized score between 0 and 1
+    # Define thresholds for categories
+    if score < 0.33:
+        return "null"
+    elif score < 0.66:
+        return "minor"
+    else:
+        return "major"
