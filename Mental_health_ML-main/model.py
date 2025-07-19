@@ -114,7 +114,10 @@ if os.path.exists(WEIGHTS_FILE):
     n_features = weights['n_features']
     n_nodes = weights['n_nodes']
 else:
-    w1, w, bias, beta_list, n_layers, n_features, n_nodes = train_and_save_model()
+    raise FileNotFoundError(
+        "model_weights.pkl not found. Please train the model locally and upload the weights file. "
+        "Do NOT attempt to train or load wearable_sensor_data.csv on Streamlit Cloud."
+    )
 
 # --- Prediction Function ---
 def compute_additional_features(user_input):
